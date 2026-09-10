@@ -14,8 +14,6 @@ const STATUS_LABELS: Record<RegistrationStatus, string> = {
 export default function DashboardPage() {
   const { user, signOut } = useAuthStore();
   const [registrations, setRegistrations] = useState<Registration[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<RegistrationStatus | 'all'>('all');
   const [selectedReg, setSelectedReg] = useState<Registration | null>(null);
@@ -173,7 +171,7 @@ export default function DashboardPage() {
                       <td className="data-table__secondary">{reg.email}</td>
                       <td className="data-table__secondary">{reg.phone}</td>
                       <td className="data-table__secondary">{reg.age}</td>
-                      <td><span className={`badge badge-${reg.status}`}>{STATUS_LABELS[reg.status]}</span></td>
+                      <td><span className={`badge badge-${reg.status}`}>{STATUS_LABELS[reg.status as RegistrationStatus]}</span></td>
                       <td className="data-table__muted">{new Date(reg.created_at).toLocaleDateString('es')}</td>
                       <td onClick={e => e.stopPropagation()}>
                         <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
@@ -205,7 +203,7 @@ export default function DashboardPage() {
               <div>
                 <h2>{selectedReg.first_name} {selectedReg.last_name}</h2>
                 <span className={`badge badge-${selectedReg.status}`} style={{ marginTop: 'var(--space-2)' }}>
-                  {STATUS_LABELS[selectedReg.status]}
+                  {STATUS_LABELS[selectedReg.status as RegistrationStatus]}
                 </span>
               </div>
               <button className="btn btn-secondary btn-icon" onClick={() => setSelectedReg(null)}>
