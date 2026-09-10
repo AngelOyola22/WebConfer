@@ -37,7 +37,7 @@ export default function LandingPage() {
         setLoading(false);
         return;
       }
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('events')
         .select('*')
         .eq('id', eventId)
