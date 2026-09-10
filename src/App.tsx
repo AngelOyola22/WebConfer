@@ -10,6 +10,7 @@ import SuccessPage from './pages/public/SuccessPage';
 // Admin Pages
 import LoginPage from './pages/admin/LoginPage';
 import DashboardPage from './pages/admin/DashboardPage';
+import EventsPage from './pages/admin/EventsPage';
 import ContactsPage from './pages/admin/ContactsPage';
 
 // Layout
@@ -38,7 +39,8 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route path='/' element={<LandingPage />} />
-        <Route path='/registro' element={<RegisterPage />} />
+        <Route path='/evento/:eventId' element={<LandingPage />} />
+        <Route path='/registro/:eventId' element={<RegisterPage />} />
         <Route path='/registro/exitoso' element={<SuccessPage />} />
 
         {/* Admin Auth */}
@@ -47,6 +49,7 @@ function App() {
         {/* Protected Admin Routes */}
         <Route element={<ProtectedRoute />}>
           <Route path='/admin' element={<DashboardPage />} />
+          <Route path='/admin/eventos' element={<EventsPage />} />
           <Route path='/admin/contactos' element={<ContactsPage />} />
         </Route>
 

@@ -14,6 +14,8 @@ const STATUS_LABELS: Record<RegistrationStatus, string> = {
 export default function DashboardPage() {
   const { user, signOut } = useAuthStore();
   const [registrations, setRegistrations] = useState<Registration[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<RegistrationStatus | 'all'>('all');
   const [selectedReg, setSelectedReg] = useState<Registration | null>(null);
@@ -24,7 +26,7 @@ export default function DashboardPage() {
     setLoading(true);
     const { data, error } = await supabase
       .from('registrations')
-      .select('*')
+      .select('*, events(title)')
       .order('created_at', { ascending: false });
     if (!error && data) setRegistrations(data as unknown as Registration[]);
     setLoading(false);
@@ -73,6 +75,10 @@ export default function DashboardPage() {
           <Link to="/admin" className="admin-nav__item admin-nav__item--active">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
             Inscripciones
+          </Link>
+          <Link to="/admin/eventos" className="admin-nav__item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Eventos
           </Link>
           <Link to="/admin/contactos" className="admin-nav__item">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -156,13 +162,14 @@ export default function DashboardPage() {
               <table className="data-table">
                 <thead>
                   <tr>
-                    <th>Nombre</th><th>Correo</th><th>Telefono</th><th>Edad</th><th>Estado</th><th>Fecha</th><th>Acciones</th>
+                    <th>Nombre</th><th>Evento</th><th>Correo</th><th>Telefono</th><th>Estado</th><th>Fecha</th><th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filtered.map(reg => (
+                  {filtered.map((reg: any) => (
                     <tr key={reg.id} className="data-table__row" onClick={() => setSelectedReg(reg)}>
                       <td className="data-table__name">{reg.first_name} {reg.last_name}</td>
+                      <td className="data-table__secondary">{reg.events?.title || 'General'}</td>
                       <td className="data-table__secondary">{reg.email}</td>
                       <td className="data-table__secondary">{reg.phone}</td>
                       <td className="data-table__secondary">{reg.age}</td>
@@ -206,10 +213,11 @@ export default function DashboardPage() {
               </button>
             </div>
             <div className="modal-grid">
+              <div className="modal-field"><span>Evento</span><strong>{(selectedReg as any).events?.title || 'General'}</strong></div>
               <div className="modal-field"><span>Correo</span><strong>{selectedReg.email}</strong></div>
               <div className="modal-field"><span>Telefono</span><strong>{selectedReg.phone}</strong></div>
               <div className="modal-field"><span>Edad</span><strong>{selectedReg.age} anos</strong></div>
-              <div className="modal-field"><span>Registrado</span><strong>{new Date(selectedReg.created_at).toLocaleString('es')}</strong></div>
+              <div className="modal-field" style={{ gridColumn: '1 / -1' }}><span>Registrado</span><strong>{new Date(selectedReg.created_at).toLocaleString('es')}</strong></div>
             </div>
             <div className="divider" />
             <p className="modal-section-label">Comprobante de Pago</p>

@@ -1,4 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { supabase } from '../../lib/supabase';
+import { Event } from '../../types/database';
 import './LandingPage.css';
 
 const features = [
@@ -24,6 +27,54 @@ const agenda = [
 ];
 
 export default function LandingPage() {
+  const { eventId } = useParams();
+  const [event, setEvent] = useState<Event | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchEvent() {
+      if (!eventId) {
+        setLoading(false);
+        return;
+      }
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .eq('id', eventId)
+        .single();
+      
+      if (data) {
+        setEvent(data as Event);
+      }
+      setLoading(false);
+    }
+    fetchEvent();
+  }, [eventId]);
+
+  const registerUrl = eventId ? `/registro/${eventId}` : '#';
+
+  if (loading) {
+    return (
+      <div className='loading-overlay'>
+        <div style={{ textAlign: 'center' }}>
+          <div className='spinner' style={{ width: 40, height: 40, margin: '0 auto var(--space-4)' }} />
+          <p style={{ color: 'var(--clr-text-secondary)' }}>Cargando evento...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!event && eventId) {
+    return (
+      <div className="landing">
+        <div className="container" style={{ textAlign: 'center', paddingTop: '100px' }}>
+          <h2>Evento no encontrado</h2>
+          <p>El evento al que intentas acceder no existe o ya no esta disponible.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="landing">
       <nav className="landing-nav">
@@ -38,7 +89,7 @@ export default function LandingPage() {
               <a href="#programa">Programa</a>
             </div>
             <div className="landing-nav__actions">
-              <Link to="/registro" className="btn btn-primary btn-sm">Inscribirme</Link>
+              <Link to={registerUrl} className="btn btn-primary btn-sm">Inscribirme</Link>
             </div>
           </div>
         </div>
@@ -56,17 +107,16 @@ export default function LandingPage() {
           <div className="hero__content">
             <div className="hero__badge animate-fade-in-up stagger-1">
               <span className="badge-dot" />
-              Proximo Evento &mdash; 15 de Octubre, 2026
+              {event ? new Date(event.event_date).toLocaleDateString() : 'Proximo Evento'}
             </div>
             <h1 className="hero__title animate-fade-in-up stagger-2">
-              Seminario de <span className="text-gradient">Derecho Contemporaneo</span> y Practica Juridica
+              {event ? event.title : <>Seminario de <span className="text-gradient">Derecho Contemporaneo</span> y Practica Juridica</>}
             </h1>
             <p className="hero__desc animate-fade-in-up stagger-3">
-              Un espacio de alto nivel para profesionales del derecho, estudiantes avanzados e instituciones.
-              Actualiza tus conocimientos con los expertos mas reconocidos del ambito legal.
+              {event && event.description ? event.description : 'Un espacio de alto nivel para profesionales del derecho, estudiantes avanzados e instituciones. Actualiza tus conocimientos con los expertos mas reconocidos del ambito legal.'}
             </p>
             <div className="hero__cta animate-fade-in-up stagger-4">
-              <Link to="/registro" className="btn btn-primary btn-lg hero__cta-main">
+              <Link to={registerUrl} className="btn btn-primary btn-lg hero__cta-main">
                 Asegurar mi Lugar
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </Link>
@@ -170,7 +220,7 @@ export default function LandingPage() {
                 <span>&bull;</span>
                 <span>Acceso inmediato a Zoom</span>
               </div>
-              <Link to="/registro" className="btn btn-primary btn-lg">
+              <Link to={registerUrl} className="btn btn-primary btn-lg">
                 Completar mi Inscripcion
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </Link>

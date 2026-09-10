@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import './RegisterPage.css';
 
@@ -22,6 +22,7 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { eventId } = useParams();
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -37,6 +38,11 @@ export default function RegisterPage() {
   };
 
   const onSubmit = async (data: FormData) => {
+    if (!eventId) {
+      setError('No se ha especificado un evento valido.');
+      return;
+    }
+    
     setLoading(true);
     setError(null);
     try {
@@ -51,6 +57,7 @@ export default function RegisterPage() {
       const { data: urlData } = supabase.storage.from('payment-proofs').getPublicUrl(fileName);
 
       const { error: insertError } = await supabase.from('registrations').insert({
+        event_id: eventId,
         first_name: data.first_name,
         last_name: data.last_name,
         age: data.age,
