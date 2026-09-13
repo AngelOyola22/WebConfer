@@ -12,7 +12,7 @@ interface ContactManagerProps {
   onContactsImported?: (contacts: Contact[]) => void;
 }
 
-export const ContactManager: React.FC<ContactManagerProps> = ({ eventId, onContactsImported }) => {
+export const ContactManager: React.FC<ContactManagerProps> = ({ eventId: _eventId, onContactsImported }) => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [manualEmail, setManualEmail] = useState('');
   const [manualFirstName, setManualFirstName] = useState('');

@@ -14,6 +14,7 @@ interface Campaign {
   created_at: string;
   scheduled_for?: string;
   event_id: string;
+  body_html?: string;
   events?: { title: string };
 }
 interface EmailLog {
@@ -68,6 +69,11 @@ const DEFAULT_EMAIL_TEMPLATE = `<div style="font-family: Arial, sans-serif; max-
   <div style="text-align: center; margin-top: 30px; display: flex; flex-direction: column; gap: 15px; align-items: center;">
     <a href="{{link_evento}}" style="background-color: #2563eb; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Ver Detalles del Evento</a>
     <a href="{{link_registro}}" style="color: #2563eb; font-weight: bold; text-decoration: underline;">Inscribirme directamente</a>
+    
+    <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 20px; width: 100%;">
+      <p style="font-size: 14px; color: #475569; margin-bottom: 10px;">¿Ya terminaste el evento?</p>
+      <a href="{{link_certificado}}" style="background-color: #1e293b; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Descargar mi Certificado</a>
+    </div>
   </div>
   
   <p style="margin-top: 40px; font-size: 11px; color: #94a3b8; text-align: center;">
@@ -155,9 +161,10 @@ export default function CampaignsPage() {
 
     // 3. Reemplazar variables de links dinámicos con el dominio actual
     const origin = window.location.origin;
-    const finalHtml = campaign.body_html
+    const finalHtml = (campaign.body_html ?? '')
       .replace(/\{\{link_evento\}\}/g, `${origin}/evento/${campaign.event_id}`)
-      .replace(/\{\{link_registro\}\}/g, `${origin}/registro/${campaign.event_id}`);
+      .replace(/\{\{link_registro\}\}/g, `${origin}/registro/${campaign.event_id}`)
+      .replace(/\{\{link_certificado\}\}/g, `${origin}/certificado/${campaign.event_id}?n={{nombre}}&a={{apellido}}`);
 
     // 4. Actualizar estado a 'queued' y guardar el HTML procesado
     await supabase.from('email_campaigns').update({
