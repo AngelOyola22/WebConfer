@@ -127,7 +127,7 @@ export default function LandingPage() {
               <div className="hero__stat-divider" />
               <div className="hero__stat"><strong>3</strong><span>Ponentes</span></div>
               <div className="hero__stat-divider" />
-              <div className="hero__stat"><strong>7h</strong><span>de Contenido</span></div>
+              <div className="hero__stat"><strong>{event ? (event.price === 0 ? 'Gratis' : `$${event.price}`) : 'Gratis'}</strong><span>Inversión</span></div>
               <div className="hero__stat-divider" />
               <div className="hero__stat"><strong>100%</strong><span>Online</span></div>
             </div>
@@ -161,48 +161,52 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="ponentes" className="section section-alt">
-        <div className="container">
-          <div className="section-header">
-            <div className="section-tag">Speakers</div>
-            <h2>Nuestros Ponentes</h2>
-            <p>Profesionales de trayectoria reconocida a nivel nacional e internacional</p>
+      {(!event || (event.speakers && event.speakers.length > 0)) && (
+        <section id="ponentes" className="section section-alt">
+          <div className="container">
+            <div className="section-header">
+              <div className="section-tag">Speakers</div>
+              <h2>Nuestros Ponentes</h2>
+              <p>Profesionales de trayectoria reconocida a nivel nacional e internacional</p>
+            </div>
+            <div className="grid-3">
+              {(event?.speakers || speakers).map((s, i) => (
+                <div key={i} className={`card card-hover speaker-card animate-fade-in-up stagger-${i + 1}`}>
+                  <div className="speaker-card__avatar">{s.initials}</div>
+                  <h3>{s.name}</h3>
+                  <p>{s.role}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="grid-3">
-            {speakers.map((s, i) => (
-              <div key={i} className={`card card-hover speaker-card animate-fade-in-up stagger-${i + 1}`}>
-                <div className="speaker-card__avatar">{s.initials}</div>
-                <h3>{s.name}</h3>
-                <p>{s.role}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      <section id="programa" className="section">
-        <div className="container-md">
-          <div className="section-header">
-            <div className="section-tag">Agenda</div>
-            <h2>Programa del Evento</h2>
-            <p>Una jornada completa de aprendizaje y actualizacion profesional</p>
-          </div>
-          <div className="agenda">
-            {agenda.map((item, i) => (
-              <div key={i} className={`agenda-item ${!item.speaker ? 'agenda-item--break' : ''}`}>
-                <div className="agenda-item__time">{item.time}</div>
-                <div className="agenda-item__line">
-                  <div className="agenda-item__dot" />
+      {(!event || (event.agenda && event.agenda.length > 0)) && (
+        <section id="programa" className="section">
+          <div className="container-md">
+            <div className="section-header">
+              <div className="section-tag">Agenda</div>
+              <h2>Programa del Evento</h2>
+              <p>Una jornada completa de aprendizaje y actualizacion profesional</p>
+            </div>
+            <div className="agenda">
+              {(event?.agenda || agenda).map((item, i) => (
+                <div key={i} className={`agenda-item ${!item.speaker ? 'agenda-item--break' : ''}`}>
+                  <div className="agenda-item__time">{item.time}</div>
+                  <div className="agenda-item__line">
+                    <div className="agenda-item__dot" />
+                  </div>
+                  <div className="agenda-item__content">
+                    <h4>{item.title}</h4>
+                    {item.speaker && <p>{item.speaker}</p>}
+                  </div>
                 </div>
-                <div className="agenda-item__content">
-                  <h4>{item.title}</h4>
-                  {item.speaker && <p>{item.speaker}</p>}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section className="section cta-section">
         <div className="container-sm">

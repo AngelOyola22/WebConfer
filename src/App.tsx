@@ -6,6 +6,7 @@ import { useAuthStore } from './store/authStore';
 import LandingPage from './pages/public/LandingPage';
 import RegisterPage from './pages/public/RegisterPage';
 import SuccessPage from './pages/public/SuccessPage';
+import CertificatePage from './pages/public/CertificatePage';
 
 // Admin Pages
 import LoginPage from './pages/admin/LoginPage';
@@ -14,6 +15,7 @@ import EventsPage from './pages/admin/EventsPage';
 import ContactsPage from './pages/admin/ContactsPage';
 import SettingsPage from './pages/admin/SettingsPage';
 import CampaignsPage from './pages/admin/CampaignsPage';
+import CertificatesPage from './pages/admin/CertificatesPage';
 
 // Layout & UI
 import ProtectedRoute from './components/layout/ProtectedRoute';
@@ -46,6 +48,7 @@ function App() {
         <Route path='/evento/:eventId' element={<LandingPage />} />
         <Route path='/registro/:eventId' element={<RegisterPage />} />
         <Route path='/registro/exitoso' element={<SuccessPage />} />
+        <Route path='/certificado/:eventId' element={<CertificatePage />} />
 
         {/* Admin Auth */}
         <Route path='/admin/login' element={<LoginPage />} />
@@ -56,6 +59,7 @@ function App() {
           <Route path='/admin/eventos' element={<EventsPage />} />
           <Route path='/admin/contactos' element={<ContactsPage />} />
           <Route path='/admin/campanas' element={<CampaignsPage />} />
+          <Route path='/admin/certificados' element={<CertificatesPage />} />
           <Route path='/admin/configuracion' element={<SettingsPage />} />
         </Route>
 

@@ -1,13 +1,28 @@
 export type EventStatus = 'draft' | 'published' | 'completed' | 'cancelled';
 
+export interface EventSpeaker {
+  name: string;
+  role: string;
+  initials: string;
+}
+
+export interface EventAgendaItem {
+  time: string;
+  title: string;
+  speaker: string;
+}
+
 export interface Event {
   id: string;
   created_at: string;
   title: string;
-  description?: string;
+  description: string;
   event_date: string;
   price: number;
   banner_url?: string;
+  meeting_url?: string;
+  speakers?: EventSpeaker[];
+  agenda?: EventAgendaItem[];
   status: EventStatus;
 }
 
@@ -58,4 +73,17 @@ export interface Database {
       };
     };
   };
+}
+
+export interface EventCertificate {
+  event_id: string;
+  background_color: string;
+  primary_color: string;
+  secondary_color: string;
+  signature_1_name: string;
+  signature_1_title: string;
+  signature_2_name: string;
+  signature_2_title: string;
+  elements?: any[]; // JSONB array of draggable elements
+  created_at?: string;
 }

@@ -1,0 +1,285 @@
+/* ============================================
+   CERTIFICADOS - Editor Avanzado A4
+   ============================================ */
+
+.certificate-editor {
+  display: grid;
+  grid-template-columns: 310px 1fr;
+  gap: var(--space-5);
+  align-items: start;
+  min-height: 0;
+}
+
+/* ── PANEL LATERAL ── */
+.certificate-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--clr-bg-card);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,0.06);
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 170px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.certificate-controls::-webkit-scrollbar { width: 4px; }
+.certificate-controls::-webkit-scrollbar-track { background: transparent; }
+.certificate-controls::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+.cert-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clr-text-muted);
+  margin: 0;
+}
+
+.cert-color-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cert-color-picker {
+  width: 40px;
+  height: 36px;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 3px;
+  cursor: pointer;
+  background: transparent;
+  flex-shrink: 0;
+}
+
+.cert-link-preview {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.cert-link-anchor {
+  font-size: 13px;
+  color: var(--clr-primary);
+  text-decoration: none;
+  font-weight: 500;
+  display: block;
+}
+.cert-link-anchor:hover { text-decoration: underline; }
+
+.cert-add-btn {
+  width: 100%;
+  margin-top: 8px;
+  font-size: 13px;
+  border-style: dashed;
+  color: var(--clr-text-secondary);
+}
+
+/* ── PANEL DE CAPAS ── */
+.layers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.layer-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+  user-select: none;
+}
+.layer-item:hover { background: rgba(255,255,255,0.05); }
+.layer-item--active {
+  background: rgba(59,130,246,0.12);
+  border-color: rgba(59,130,246,0.3);
+}
+
+.layer-eye {
+  font-size: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.layer-name {
+  flex: 1;
+  font-size: 12px;
+  color: var(--clr-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.layer-actions {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.layer-actions button {
+  background: none;
+  border: none;
+  color: #475569;
+  cursor: pointer;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 13px;
+  line-height: 1;
+}
+.layer-actions button:hover { color: #e2e8f0; background: rgba(255,255,255,0.1); }
+
+/* ── EDITOR DE ELEMENTO ── */
+.element-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.cert-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--clr-text-secondary);
+  cursor: pointer;
+}
+
+/* ── ÁREA DE PREVISUALIZACIÓN ── */
+.certificate-preview-wrapper {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+
+.cert-preview-toolbar {
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.cert-preview-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--clr-text-muted);
+  font-family: 'Courier New', monospace;
+}
+
+.certificate-preview-container {
+  background: #0c1322;
+  padding: 28px;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  min-height: 300px;
+}
+
+.cert-scale-wrapper {
+  flex-shrink: 0;
+  transition: transform 0.08s ease;
+}
+
+/* ============================================
+   CANVAS DEL CERTIFICADO — A4 Landscape
+   960 × 679 px  (≈ 297 × 210 mm @96 dpi)
+   ============================================ */
+.certificate-canvas {
+  width: 960px;
+  height: 679px;
+  background-color: var(--cert-bg, #ffffff);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24px 56px rgba(0,0,0,0.55);
+  font-family: Arial, sans-serif;
+}
+
+/* ── CAPAS ── */
+.cert-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cert-watermark {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+.cert-watermark-text {
+  font-size: 130px;
+  font-weight: 900;
+  color: var(--cert-primary, #1e3a8a);
+  opacity: 0.035;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transform: rotate(-20deg);
+  white-space: nowrap;
+  user-select: none;
+  font-family: Georgia, serif;
+}
+
+.cert-waves {
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+}
+
+.cert-seal {
+  z-index: 5;
+}
+
+/* ── Handles de selección ── */
+.rnd-handle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #3b82f6;
+  border: 1.5px solid #fff;
+  border-radius: 2px;
+  z-index: 100;
+  pointer-events: none;
+}
+.rnd-handle-tl { top: -5px;  left: -5px; }
+.rnd-handle-tr { top: -5px;  right: -5px; }
+.rnd-handle-bl { bottom: -5px; left: -5px; }
+.rnd-handle-br { bottom: -5px; right: -5px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1200px) {
+  .certificate-editor {
+    grid-template-columns: 1fr;
+  }
+  .certificate-controls {
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+  }
+}
