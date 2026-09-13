@@ -1,0 +1,50 @@
+/* Campaigns Page Specific Styles */
+
+.campaign-create-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.campaign-html-editor {
+  font-family: 'Fira Code', 'Courier New', monospace !important;
+  font-size: var(--text-xs) !important;
+  line-height: 1.6 !important;
+  resize: vertical;
+}
+
+.campaign-preview-panel {
+  position: sticky;
+  top: var(--space-6);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.campaign-html-preview {
+  background: white;
+  color: #1a1a1a;
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 200px;
+}
+
+.campaign-html-preview h1, .campaign-html-preview h2, .campaign-html-preview h3 {
+  color: #1a1a1a;
+}
+
+.campaign-log-header {
+  border-left: 3px solid var(--clr-primary);
+}
+
+@media (max-width: 1024px) {
+  .campaign-create-grid {
+    grid-template-columns: 1fr;
+  }
+  .campaign-preview-panel {
+    position: static;
+    max-height: none;
+  }
+}

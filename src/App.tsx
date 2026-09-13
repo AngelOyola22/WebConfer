@@ -12,9 +12,12 @@ import LoginPage from './pages/admin/LoginPage';
 import DashboardPage from './pages/admin/DashboardPage';
 import EventsPage from './pages/admin/EventsPage';
 import ContactsPage from './pages/admin/ContactsPage';
+import SettingsPage from './pages/admin/SettingsPage';
+import CampaignsPage from './pages/admin/CampaignsPage';
 
-// Layout
+// Layout & UI
 import ProtectedRoute from './components/layout/ProtectedRoute';
+import ToastContainer from './components/ui/ToastContainer';
 
 function App() {
   const { initialize, loading } = useAuthStore();
@@ -36,6 +39,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ToastContainer />
       <Routes>
         {/* Public Routes */}
         <Route path='/' element={<LandingPage />} />
@@ -51,6 +55,8 @@ function App() {
           <Route path='/admin' element={<DashboardPage />} />
           <Route path='/admin/eventos' element={<EventsPage />} />
           <Route path='/admin/contactos' element={<ContactsPage />} />
+          <Route path='/admin/campanas' element={<CampaignsPage />} />
+          <Route path='/admin/configuracion' element={<SettingsPage />} />
         </Route>
 
         {/* Fallback */}
