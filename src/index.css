@@ -1,4 +1,4 @@
-﻿/* ============================================
+/* ============================================
    WebConfer - Global Design System v2
    Premium Dark Theme
    ============================================ */
@@ -411,4 +411,13 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); line-height: 1.15; fo
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 25px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin-animation {
+  animation: spin 1s linear infinite;
 }
